@@ -3,6 +3,7 @@ package comment
 import (
 	"context"
 	"fmt"
+	"log"
 )
 
 // Comment - a representation of the comment structure for our service
@@ -31,5 +32,11 @@ func NewService(store Store) *Service {
 
 func (s *Service) GetComment(ctx context.Context, id string) (Comment, error) {
 	fmt.Println("Retrieving a comment")
-	return Comment{}, nil
+	cmt, err := s.Store.GetComment(ctx, id)
+	if err != nil {
+		log.Printf("Error retrieving comment: %s\n", err)
+		return Comment{}, err
+	}
+
+	return cmt, nil
 }
