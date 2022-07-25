@@ -8,10 +8,12 @@ import (
 	"os"
 )
 
+// Database - It's the struct that represents our Database
 type Database struct {
 	Client *sqlx.DB
 }
 
+// NewDatabase - Instantiates our database
 func NewDatabase() (*Database, error) {
 	connectionString := fmt.Sprintf(
 		"host=%s port=%s user=%s dbname=%s passwowrd=%s sslmode=%s",
@@ -31,6 +33,7 @@ func NewDatabase() (*Database, error) {
 	return &Database{Client: dbConn}, nil
 }
 
+// Ping - Ping our database to check its health.
 func (d *Database) Ping(ctx context.Context) error {
 	return d.Client.DB.PingContext(ctx)
 }
