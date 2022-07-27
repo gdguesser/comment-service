@@ -3,9 +3,10 @@ package db
 import (
 	"context"
 	"fmt"
+	"os"
+
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"os"
 )
 
 // Database - It's the struct that represents our Database
@@ -16,7 +17,7 @@ type Database struct {
 // NewDatabase - Instantiates our database
 func NewDatabase() (*Database, error) {
 	connectionString := fmt.Sprintf(
-		"host=%s port=%s user=%s dbname=%s passwowrd=%s sslmode=%s",
+		"host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_PORT"),
 		os.Getenv("DB_USERNAME"),
