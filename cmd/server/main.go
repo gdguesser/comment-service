@@ -1,12 +1,12 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 
 	"github.com/gdguesser/comment-service/internal/comment"
 	"github.com/gdguesser/comment-service/internal/db"
+	transportHttp "github.com/gdguesser/comment-service/internal/transport/http"
 )
 
 // Run - is going to be responsible for the instantiation and startup of our go application
@@ -23,17 +23,10 @@ func Run() error {
 	}
 	cmtService := comment.NewService(db)
 
-	cmtService.Store.PostComment(context.Background(), comment.Comment{
-		ID:     "027c1b0d-f295-473a-a767-f4c0847d9406",
-		Slug:   "test-test",
-		Body:   "inserting comment body context",
-		Author: "Gabriel",
-	})
-
-	fmt.Println(cmtService.GetComment(
-		context.Background(),
-		"3225bc62-9f44-4af4-970a-8494e90e1147",
-	))
+	httpHandler := transportHttp.NewHandler(cmtService)
+	if err := httpHandler.Serve(); err != nil {
+		return err
+	}
 
 	fmt.Println("Successfully connected and pinged the database")
 	return nil
