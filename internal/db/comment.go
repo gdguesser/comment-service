@@ -74,7 +74,7 @@ func (d *Database) PostComment(ctx context.Context, cmt comment.Comment) (commen
 // UpdateComment - updates a comment in the database
 func (d *Database) UpdateComment(ctx context.Context, id string, cmt comment.Comment) (comment.Comment, error) {
 	cmtRow := CommentRow{
-		ID: cmt.ID,
+		ID: id,
 		Slug: sql.NullString{
 			String: cmt.Slug,
 			Valid:  true,

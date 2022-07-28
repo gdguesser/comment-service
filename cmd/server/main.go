@@ -30,12 +30,10 @@ func Run() error {
 		Author: "Gabriel",
 	})
 
-	cmtService.DeleteComment(context.Background(), "9806ee64-3f4a-4094-b51b-9955211edac4")
-
 	fmt.Println(cmtService.GetComment(
-		context.Background(), 
+		context.Background(),
 		"3225bc62-9f44-4af4-970a-8494e90e1147",
-		))
+	))
 
 	fmt.Println("Successfully connected and pinged the database")
 	return nil
