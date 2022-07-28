@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 
+	"github.com/gdguesser/comment-service/internal/comment"
 	"github.com/gdguesser/comment-service/internal/db"
 )
 
@@ -19,6 +21,11 @@ func Run() error {
 		log.Println("failed to migrate database")
 		return err
 	}
+	cmtService := comment.NewService(db)
+	fmt.Println(cmtService.GetComment(
+		context.Background(), 
+		"1dde6f57-3e47-4b68-80c9-fed100947511",
+		))
 
 	fmt.Println("Successfully connected and pinged the database")
 	return nil

@@ -14,7 +14,7 @@ var (
 
 // Comment - a representation of the comment structure for our service
 type Comment struct {
-	ID     int
+	ID     string
 	Slug   string
 	Body   string
 	Author string
