@@ -22,9 +22,19 @@ func Run() error {
 		return err
 	}
 	cmtService := comment.NewService(db)
+
+	cmtService.Store.PostComment(context.Background(), comment.Comment{
+		ID:     "027c1b0d-f295-473a-a767-f4c0847d9406",
+		Slug:   "test-test",
+		Body:   "inserting comment body context",
+		Author: "Gabriel",
+	})
+
+	cmtService.DeleteComment(context.Background(), "9806ee64-3f4a-4094-b51b-9955211edac4")
+
 	fmt.Println(cmtService.GetComment(
 		context.Background(), 
-		"1dde6f57-3e47-4b68-80c9-fed100947511",
+		"3225bc62-9f44-4af4-970a-8494e90e1147",
 		))
 
 	fmt.Println("Successfully connected and pinged the database")
