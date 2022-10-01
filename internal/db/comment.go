@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/gdguesser/comment-service/internal/comment"
-	"github.com/satori/uuid"
+	"github.com/gdguesser/comment-service/util"
 )
 
 type CommentRow struct {
@@ -46,7 +46,7 @@ func (d *Database) GetComment(
 
 // PostComment - post a comment in the database
 func (d *Database) PostComment(ctx context.Context, cmt comment.Comment) (comment.Comment, error) {
-	cmt.ID = uuid.NewV4().String()
+	cmt.ID = util.GenerateULID()
 	postRow := CommentRow{
 		ID:     cmt.ID,
 		Slug:   sql.NullString{String: cmt.Slug, Valid: true},

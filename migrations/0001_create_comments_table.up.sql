@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS comments (
-    ID uuid,
+    ID text,
     Slug text,
     Author text,
     Body text
