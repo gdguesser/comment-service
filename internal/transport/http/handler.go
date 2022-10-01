@@ -2,7 +2,6 @@ package http
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -35,11 +34,6 @@ func NewHandler(service CommentService) *Handler {
 }
 
 func (h *Handler) mapRoutes() {
-	h.Router.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
-		log.Print("test?")
-		fmt.Fprintf(w, "Hello World")
-	})
-
 	h.Router.HandleFunc("/api/v1/comment", h.PostComment).Methods("POST")
 	h.Router.HandleFunc("/api/v1/comment/{id}", h.GetComment).Methods("GET")
 	h.Router.HandleFunc("/api/v1/comment/{id}", h.UpdateComment).Methods("PUT")
