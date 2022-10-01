@@ -67,7 +67,7 @@ func initTracer() func(context.Context) error {
 func Run() error {
 	db, err := db.NewDatabase()
 	if err != nil {
-		log.Println("Failed to connect to the database")
+		log.Println("failed to connect to the database")
 		return err
 	}
 	if err := db.MigrateDB(); err != nil {
@@ -77,7 +77,7 @@ func Run() error {
 	cmtService := comment.NewService(db)
 
 	httpHandler := transportHttp.NewHandler(cmtService)
-	log.Printf("Starting up our application on %v", httpHandler.Server.Addr)
+	log.Printf("starting up our application on %v", httpHandler.Server.Addr)
 	if err := httpHandler.Serve(); err != nil {
 		return err
 	}
