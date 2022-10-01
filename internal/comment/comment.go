@@ -14,10 +14,10 @@ var (
 
 // Comment - a representation of the comment structure for our service
 type Comment struct {
-	ID     string
-	Slug   string
-	Body   string
-	Author string
+	ID     string `json:"id"`
+	Slug   string `json:"slug"`
+	Body   string `json:"body"`
+	Author string `json:"author"`
 }
 
 // Store - this interface defines all the methods that our service needs in order to operate
