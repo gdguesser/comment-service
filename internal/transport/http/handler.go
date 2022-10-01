@@ -10,10 +10,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	middleware "go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
 )
-
-type CommentService interface{}
 
 type Handler struct {
 	Router  *mux.Router
@@ -26,7 +23,6 @@ func NewHandler(service CommentService) *Handler {
 		Service: service,
 	}
 	h.Router = mux.NewRouter()
-	h.Router.Use(middleware.Middleware("comment-service"))
 	h.mapRoutes()
 
 	h.Server = &http.Server{
