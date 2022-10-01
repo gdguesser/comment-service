@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 
@@ -66,29 +65,27 @@ func initTracer() func(context.Context) error {
 
 // Run - is going to be responsible for the instantiation and startup of our go application
 func Run() error {
-	fmt.Println("Starting up our application")
 	db, err := db.NewDatabase()
 	if err != nil {
-		fmt.Println("Failed to connect to the database")
+		log.Println("Failed to connect to the database")
 		return err
 	}
-	// if err := db.MigrateDB(); err != nil {
-	// 	log.Println("failed to migrate database")
-	// 	return err
-	// }
+	if err := db.MigrateDB(); err != nil {
+		log.Println("failed to migrate database")
+		return err
+	}
 	cmtService := comment.NewService(db)
 
 	httpHandler := transportHttp.NewHandler(cmtService)
+	log.Printf("Starting up our application on %v", httpHandler.Server.Addr)
 	if err := httpHandler.Serve(); err != nil {
 		return err
 	}
 
-	fmt.Println("Successfully connected and pinged the database")
 	return nil
 }
 
 func main() {
-	fmt.Println("Go REST API Course.")
 	cleanup := initTracer()
 	defer cleanup(context.Background())
 

@@ -30,7 +30,7 @@ func NewHandler(service CommentService) *Handler {
 	h.mapRoutes()
 
 	h.Server = &http.Server{
-		Addr:    "0.0.0.0:8080",
+		Addr:    "localhost:8080",
 		Handler: h.Router,
 	}
 	return h
@@ -38,6 +38,7 @@ func NewHandler(service CommentService) *Handler {
 
 func (h *Handler) mapRoutes() {
 	h.Router.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+		log.Print("test?")
 		fmt.Fprintf(w, "Hello World")
 	})
 }
@@ -57,7 +58,7 @@ func (h *Handler) Serve() error {
 	defer cancel()
 	h.Server.Shutdown(ctx)
 
-	log.Println("shut down gracefully")
+	log.Println("Shutting down gracefully")
 
 	return nil
 }

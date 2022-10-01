@@ -12,7 +12,7 @@ import (
 )
 
 func (d *Database) MigrateDB() error {
-	fmt.Println("Migrating our database")
+	fmt.Println("Migrating database")
 
 	driver, err := postgres.WithInstance(d.Client.DB, &postgres.Config{})
 	if err != nil {
