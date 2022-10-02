@@ -43,4 +43,23 @@ func TestCommentDatabase(t *testing.T) {
 		_, err = db.GetComment(context.Background(), cmt.ID)
 		assert.Error(t, err)
 	})
+
+	t.Run("test update comment", func(t *testing.T)  {
+		db, err := NewDatabase()
+		assert.NoError(t, err)
+		cmt, err := db.PostComment(context.Background(), comment.Comment{
+			Slug:   "new-slug",
+			Author: "gabriel",
+			Body:   "body",
+		})
+		assert.NoError(t, err)
+
+		updatedCmt, err := db.UpdateComment(context.Background(), cmt.ID, comment.Comment{
+			Slug:   "updated-slug",
+			Author: "updated-gabriel",
+			Body:   "updated-body",
+		})
+		assert.NoError(t,err)
+		assert.Equal(t, "updated-slug", updatedCmt.Slug)
+	})
 }
