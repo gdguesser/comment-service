@@ -2,11 +2,10 @@ package http
 
 import (
 	"errors"
-	"log"
 	"net/http"
 	"strings"
 
-	jwt "github.com/dgrijalva/jwt-go"
+	jwt "github.com/golang-jwt/jwt/v4"
 )
 
 func JWTAuth(
@@ -15,7 +14,7 @@ func JWTAuth(
 	return func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header["Authorization"]
 		if authHeader == nil {
-			http.Error(w, "Not authorized", http.StatusUnauthorized)
+			http.Error(w, "Not authorized a", http.StatusUnauthorized)
 			return
 		}
 
@@ -48,8 +47,6 @@ func validateToken(accessToken string) bool {
 	if err != nil {
 		return false
 	}
-
-	log.Print(token.Valid)
 
 	return token.Valid
 }
