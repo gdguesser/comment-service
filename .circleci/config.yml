@@ -24,9 +24,6 @@ jobs:
       - run:
           name: Build application
           command: go build -o app cmd/server/main.go
-      - run:
-          name: Run application
-          command: docker-compose up --build -d
       - save_cache:
           key: go-mod-v4-{{ checksum "go.sum" }}
           paths:
