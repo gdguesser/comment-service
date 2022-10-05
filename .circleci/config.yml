@@ -18,7 +18,7 @@ jobs:
       - restore_cache:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
-      - install_dependencies:
+      - run:
           name: Install Dependencies
           command: go get ./...
       - build:
@@ -31,10 +31,10 @@ jobs:
           key: go-mod-v4-{{ checksum "go.sum" }}
           paths:
             - "/go/pkg/mod"
-      - integration_tests:
+      - run:
           name: Run integration tests
           command: go test -tags=integration -v ./...
-      - acceptance_tests:
+      - run:
           name: Run acceptance tests
           command: go test -tags=e2e -v ./...
 
