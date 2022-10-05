@@ -17,10 +17,10 @@ tasks:
     cmds:
       - docker-compose up --build -d
 
-  integration-test:
+  integration-tests:
     cmds:
       - docker-compose up -d db
-      - go test -tags=integration -v ./...
+      - go test -coverprofile cover.out -tags=integration -v ./...
     env:
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
