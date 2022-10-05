@@ -18,16 +18,25 @@ jobs:
       - restore_cache:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
-      - run:
+      - install_dependencies:
           name: Install Dependencies
           command: go get ./...
+      - build:
+          name: Build application
+          command: go build -o app cmd/server/main.go
+      - run:
+          name: Run application
+          command: docker-compose up --build -d
       - save_cache:
           key: go-mod-v4-{{ checksum "go.sum" }}
           paths:
             - "/go/pkg/mod"
-      - run:
-          name: Run tests
-          command: go test -v
+      - integration_tests:
+          name: Run integration tests
+          command: go test -tags=integration -v ./...
+      - acceptance_tests:
+          name: Run acceptance tests
+          command: go test -tags=e2e -v ./...
 
 workflows:
   say-hello-workflow:
