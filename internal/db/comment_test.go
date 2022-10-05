@@ -1,5 +1,3 @@
-//go:build integration
-
 package db
 
 import (
@@ -44,7 +42,7 @@ func TestCommentDatabase(t *testing.T) {
 		assert.Error(t, err)
 	})
 
-	t.Run("test update comment", func(t *testing.T)  {
+	t.Run("test update comment", func(t *testing.T) {
 		db, err := NewDatabase()
 		assert.NoError(t, err)
 		cmt, err := db.PostComment(context.Background(), comment.Comment{
@@ -59,7 +57,7 @@ func TestCommentDatabase(t *testing.T) {
 			Author: "updated-gabriel",
 			Body:   "updated-body",
 		})
-		assert.NoError(t,err)
+		assert.NoError(t, err)
 		assert.Equal(t, "updated-slug", updatedCmt.Slug)
 	})
 }
