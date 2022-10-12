@@ -28,12 +28,6 @@ jobs:
           key: go-mod-v4-{{ checksum "go.sum" }}
           paths:
             - "/go/pkg/mod"
-      - run:
-          name: Run integration tests
-          command: go test -tags=integration -v ./...
-      - run:
-          name: Run acceptance tests
-          command: go test -tags=e2e -v ./...
 
 workflows:
   say-hello-workflow:
