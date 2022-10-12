@@ -7,8 +7,8 @@ import (
 	"net/http"
 
 	"github.com/gdguesser/comment-service/internal/comment"
+	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
-	"github.com/gorilla/mux"
 )
 
 type CommentService interface {
@@ -63,8 +63,7 @@ func (h *Handler) PostComment(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) GetComment(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
+	id := chi.URLParam(r, "id")
 	if id == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -83,8 +82,7 @@ func (h *Handler) GetComment(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) UpdateComment(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
+	id := chi.URLParam(r, "id")
 	if id == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -108,8 +106,7 @@ func (h *Handler) UpdateComment(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) DeleteComment(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	id := vars["id"]
+	id := chi.URLParam(r, "id")
 
 	if id == "" {
 		w.WriteHeader(http.StatusBadRequest)

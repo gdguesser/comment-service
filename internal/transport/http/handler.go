@@ -9,11 +9,12 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 type Handler struct {
-	Router  *mux.Router
+	Router  *chi.Mux
 	Service CommentService
 	Server  *http.Server
 }
@@ -22,9 +23,10 @@ func NewHandler(service CommentService) *Handler {
 	h := &Handler{
 		Service: service,
 	}
-	h.Router = mux.NewRouter()
+	h.Router = chi.NewRouter()
 	h.Router.Use(JSONMiddleware)
-	h.Router.Use(LoggingMiddleware)
+	// h.Router.Use(LoggingMiddleware)
+	h.Router.Use(middleware.Logger)
 	h.Router.Use(TimeoutMiddleware)
 	h.mapRoutes()
 
@@ -40,10 +42,10 @@ func (h *Handler) mapRoutes() {
 		fmt.Println(w, "UP")
 	})
 
-	h.Router.HandleFunc("/api/v1/comment", JWTAuth(h.PostComment)).Methods("POST")
-	h.Router.HandleFunc("/api/v1/comment/{id}", h.GetComment).Methods("GET")
-	h.Router.HandleFunc("/api/v1/comment/{id}", JWTAuth(h.UpdateComment)).Methods("PUT")
-	h.Router.HandleFunc("/api/v1/comment/{id}", JWTAuth(h.DeleteComment)).Methods("DELETE")
+	h.Router.Post("/api/v1/comment", JWTAuth(h.PostComment))
+	h.Router.Get("/api/v1/comment/{id}", h.GetComment)
+	h.Router.Put("/api/v1/comment/{id}", JWTAuth(h.UpdateComment))
+	h.Router.Delete("/api/v1/comment/{id}", JWTAuth(h.DeleteComment))
 }
 
 func (h *Handler) Serve() error {
