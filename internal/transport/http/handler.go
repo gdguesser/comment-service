@@ -25,7 +25,6 @@ func NewHandler(service CommentService) *Handler {
 	}
 	h.Router = chi.NewRouter()
 	h.Router.Use(JSONMiddleware)
-	// h.Router.Use(LoggingMiddleware)
 	h.Router.Use(middleware.Logger)
 	h.Router.Use(TimeoutMiddleware)
 	h.mapRoutes()
