@@ -11,6 +11,24 @@ import (
 )
 
 func TestCommentDatabase(t *testing.T) {
+	t.Run("test get all comments", func(t *testing.T) {
+		db, err := NewDatabase()
+		assert.NoError(t, err)
+
+		cmts, err := db.GetAllComments(context.Background())
+		assert.NoError(t, err)
+		assert.NotEmpty(t, cmts)
+	})
+
+	t.Run("test get comment", func(t *testing.T) {
+		db, err := NewDatabase()
+		assert.NoError(t, err)
+
+		cmt, err := db.GetComment(context.Background(), "01GF70E4M1F5XN8X3GCQPKWKAF")
+		assert.NoError(t, err)
+		assert.NotEmpty(t, cmt)
+	})
+
 	t.Run("test create comment", func(t *testing.T) {
 		db, err := NewDatabase()
 		assert.NoError(t, err)
