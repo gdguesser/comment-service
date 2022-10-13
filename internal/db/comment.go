@@ -27,6 +27,7 @@ func convertCommentRowToComment(c CommentRow) comment.Comment {
 	}
 }
 
+// GetAllComments - get retrieves all comments (persistence layer).
 func (d *Database) GetAllComments(ctx context.Context) ([]comment.Comment, error) {
 	rows, err := d.Client.QueryContext(ctx, `select * from comments`)
 	if err != nil {
@@ -51,7 +52,7 @@ func (d *Database) GetAllComments(ctx context.Context) ([]comment.Comment, error
 	return comments, nil
 }
 
-// GetComment - get comment from the database
+// GetComment - get comment from the database (persistence layer).
 func (d *Database) GetComment(
 	ctx context.Context,
 	uuid string,
@@ -70,7 +71,7 @@ func (d *Database) GetComment(
 	return convertCommentRowToComment(cmtRow), nil
 }
 
-// PostComment - post a comment in the database
+// PostComment - post a comment in the database (persistence layer).
 func (d *Database) PostComment(ctx context.Context, cmt comment.Comment) (comment.Comment, error) {
 	cmt.ID = util.GenerateULID()
 	postRow := CommentRow{
@@ -97,7 +98,7 @@ func (d *Database) PostComment(ctx context.Context, cmt comment.Comment) (commen
 	return cmt, nil
 }
 
-// UpdateComment - updates a comment in the database
+// UpdateComment - updates a comment in the database (persistence layer).
 func (d *Database) UpdateComment(ctx context.Context, id string, cmt comment.Comment) (comment.Comment, error) {
 	cmtRow := CommentRow{
 		ID: id,
@@ -135,7 +136,7 @@ func (d *Database) UpdateComment(ctx context.Context, id string, cmt comment.Com
 	return convertCommentRowToComment(cmtRow), nil
 }
 
-// DeleteComment - deletes a comment from the database
+// DeleteComment - deletes a comment from the database (persistence layer).
 func (d *Database) DeleteComment(ctx context.Context, id string) error {
 	_, err := d.Client.ExecContext(
 		ctx,

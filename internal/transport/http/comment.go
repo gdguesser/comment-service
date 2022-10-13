@@ -11,6 +11,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// CommentService - it's the service interface where we define the methods that needs to be implemented.
 type CommentService interface {
 	GetAllComments(ctx context.Context) ([]comment.Comment, error)
 	GetComment(ctx context.Context, ID string) (comment.Comment, error)
@@ -54,7 +55,7 @@ func (h *Handler) GetAllComments(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// GetComment - retrieve a single comemnt by its ID.
+// GetComment - retrieve a single comemnt by its ID (service layer).
 func (h *Handler) GetComment(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if id == "" {
@@ -74,7 +75,7 @@ func (h *Handler) GetComment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// PostComment - posts a new comment.
+// PostComment - posts a new comment (service layer).
 func (h *Handler) PostComment(w http.ResponseWriter, r *http.Request) {
 	var cmt PostCommentRequest
 	if err := json.NewDecoder(r.Body).Decode(&cmt); err != nil {
@@ -101,7 +102,7 @@ func (h *Handler) PostComment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// UpdateComment - updates a existing comment.
+// UpdateComment - updates a existing comment (service layer).
 func (h *Handler) UpdateComment(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if id == "" {
@@ -126,7 +127,7 @@ func (h *Handler) UpdateComment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// DeleteComment - deletes a comemnt.
+// DeleteComment - deletes a comemnt (service layer).
 func (h *Handler) DeleteComment(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
