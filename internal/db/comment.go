@@ -25,6 +25,30 @@ func convertCommentRowToComment(c CommentRow) comment.Comment {
 	}
 }
 
+func (d *Database) GetAllComments(ctx context.Context) ([]comment.Comment, error) {
+	rows, err := d.Client.QueryContext(ctx, `select * from comments`)
+	if err != nil {
+		return []comment.Comment{}, fmt.Errorf("error fetching comments: %w", err)
+	}
+	defer rows.Close()
+
+	var comments []comment.Comment
+
+	for rows.Next() {
+		var cmt comment.Comment
+		if err := rows.Scan(&cmt.ID, &cmt.Slug, &cmt.Author, &cmt.Body); err != nil {
+			return comments, fmt.Errorf("error fetching comments: %w", err)
+		}
+		comments = append(comments, cmt)
+	}
+
+	if err = rows.Err(); err != nil {
+		return comments, fmt.Errorf("error fetching comments: %w", err)
+	}
+
+	return comments, nil
+}
+
 // GetComment - get comment from the database
 func (d *Database) GetComment(
 	ctx context.Context,

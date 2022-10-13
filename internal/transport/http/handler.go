@@ -41,8 +41,9 @@ func (h *Handler) mapRoutes() {
 		fmt.Println(w, "UP")
 	})
 
-	h.Router.Post("/api/v1/comment", JWTAuth(h.PostComment))
+	h.Router.Get("/api/v1/comment", h.GetAllComments)
 	h.Router.Get("/api/v1/comment/{id}", h.GetComment)
+	h.Router.Post("/api/v1/comment", JWTAuth(h.PostComment))
 	h.Router.Put("/api/v1/comment/{id}", JWTAuth(h.UpdateComment))
 	h.Router.Delete("/api/v1/comment/{id}", JWTAuth(h.DeleteComment))
 }

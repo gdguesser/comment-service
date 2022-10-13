@@ -22,6 +22,7 @@ type Comment struct {
 
 // Store - this interface defines all the methods that our service needs in order to operate
 type Store interface {
+	GetAllComments(context.Context) ([]Comment, error)
 	GetComment(context.Context, string) (Comment, error)
 	PostComment(context.Context, Comment) (Comment, error)
 	UpdateComment(context.Context, string, Comment) (Comment, error)
@@ -38,6 +39,16 @@ func NewService(store Store) *Service {
 	return &Service{
 		Store: store,
 	}
+}
+
+func (s *Service) GetAllComments(ctx context.Context) ([]Comment, error) {
+	cmts, err := s.Store.GetAllComments(ctx)
+	if err != nil {
+		log.Printf("Error retrieving all comments: %s\n", err)
+		return []Comment{}, err
+	}
+
+	return cmts, nil
 }
 
 func (s *Service) GetComment(ctx context.Context, id string) (Comment, error) {

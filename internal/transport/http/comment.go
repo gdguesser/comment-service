@@ -12,8 +12,9 @@ import (
 )
 
 type CommentService interface {
-	PostComment(context.Context, comment.Comment) (comment.Comment, error)
+	GetAllComments(ctx context.Context) ([]comment.Comment, error)
 	GetComment(ctx context.Context, ID string) (comment.Comment, error)
+	PostComment(context.Context, comment.Comment) (comment.Comment, error)
 	UpdateComment(ctx context.Context, ID string, newCmt comment.Comment) (comment.Comment, error)
 	DeleteComment(ctx context.Context, ID string) error
 }
@@ -33,6 +34,38 @@ func convertPostCommentRequestToComment(c PostCommentRequest) comment.Comment {
 		Slug:   c.Slug,
 		Author: c.Author,
 		Body:   c.Body,
+	}
+}
+
+func (h *Handler) GetAllComments(w http.ResponseWriter, r *http.Request) {
+	cmts, err := h.Service.GetAllComments(r.Context())
+	if err != nil {
+		log.Print(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if err = json.NewEncoder(w).Encode(cmts); err != nil {
+		panic(err)
+	}
+}
+
+func (h *Handler) GetComment(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	if id == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	cmt, err := h.Service.GetComment(r.Context(), id)
+	if err != nil {
+		log.Print(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if err := json.NewEncoder(w).Encode(cmt); err != nil {
+		panic(err)
 	}
 }
 
@@ -58,25 +91,6 @@ func (h *Handler) PostComment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewEncoder(w).Encode(postedComment); err != nil {
-		panic(err)
-	}
-}
-
-func (h *Handler) GetComment(w http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "id")
-	if id == "" {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	cmt, err := h.Service.GetComment(r.Context(), id)
-	if err != nil {
-		log.Print(err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	if err := json.NewEncoder(w).Encode(cmt); err != nil {
 		panic(err)
 	}
 }
