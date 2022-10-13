@@ -45,10 +45,18 @@ func TestPostComment(t *testing.T) {
 }
 
 func TestGetComment(t *testing.T) {
+	t.Run("can get all comments", func(t *testing.T) {
+		client := resty.New()
+
+		resp, err := client.R().Get("http://localhost:8080/api/v1/comment")
+		assert.NoError(t, err)
+		assert.Equal(t, 200, resp.StatusCode())
+	})
+
 	t.Run("can get comment", func(t *testing.T) {
 		client := resty.New()
 
-		resp, err := client.R().Get("http://localhost:8080/api/v1/comment/01GEM0SMER7AK27A1NED7R17V6")
+		resp, err := client.R().Get("http://localhost:8080/api/v1/comment/01GF70E4M1F5XN8X3GCQPKWKAF")
 		assert.NoError(t, err)
 		assert.Equal(t, 200, resp.StatusCode())
 	})

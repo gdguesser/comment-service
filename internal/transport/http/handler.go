@@ -2,7 +2,6 @@ package http
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -24,8 +23,9 @@ func NewHandler(service CommentService) *Handler {
 		Service: service,
 	}
 	h.Router = chi.NewRouter()
-	h.Router.Use(JSONMiddleware)
 	h.Router.Use(middleware.Logger)
+	h.Router.Use(middleware.Heartbeat("/alive"))
+	h.Router.Use(JSONMiddleware)
 	h.Router.Use(TimeoutMiddleware)
 	h.mapRoutes()
 
@@ -37,10 +37,6 @@ func NewHandler(service CommentService) *Handler {
 }
 
 func (h *Handler) mapRoutes() {
-	h.Router.HandleFunc("/alive", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println(w, "UP")
-	})
-
 	h.Router.Get("/api/v1/comment", h.GetAllComments)
 	h.Router.Get("/api/v1/comment/{id}", h.GetComment)
 	h.Router.Post("/api/v1/comment", JWTAuth(h.PostComment))
