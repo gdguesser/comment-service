@@ -19,16 +19,19 @@ type CommentService interface {
 	DeleteComment(ctx context.Context, ID string) error
 }
 
+// Response - represents a response to output messages to the user.
 type Response struct {
 	Message string
 }
 
+// PostCommentRequest - It's a DTO for the Comment struct.
 type PostCommentRequest struct {
 	Slug   string `json:"slug" validate:"required"`
 	Author string `json:"author" validate:"required"`
 	Body   string `json:"body" validate:"required"`
 }
 
+// convertPostCommentRequestToComment - converts a PostCommentRequest(DTO) to a Comment so it can be saved to the database.
 func convertPostCommentRequestToComment(c PostCommentRequest) comment.Comment {
 	return comment.Comment{
 		Slug:   c.Slug,
@@ -37,6 +40,7 @@ func convertPostCommentRequestToComment(c PostCommentRequest) comment.Comment {
 	}
 }
 
+// GetAllComments - retrieves all comments (service layer).
 func (h *Handler) GetAllComments(w http.ResponseWriter, r *http.Request) {
 	cmts, err := h.Service.GetAllComments(r.Context())
 	if err != nil {
@@ -50,6 +54,7 @@ func (h *Handler) GetAllComments(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GetComment - retrieve a single comemnt by its ID.
 func (h *Handler) GetComment(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if id == "" {
@@ -69,6 +74,7 @@ func (h *Handler) GetComment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// PostComment - posts a new comment.
 func (h *Handler) PostComment(w http.ResponseWriter, r *http.Request) {
 	var cmt PostCommentRequest
 	if err := json.NewDecoder(r.Body).Decode(&cmt); err != nil {
@@ -95,6 +101,7 @@ func (h *Handler) PostComment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// UpdateComment - updates a existing comment.
 func (h *Handler) UpdateComment(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if id == "" {
@@ -119,6 +126,7 @@ func (h *Handler) UpdateComment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// DeleteComment - deletes a comemnt.
 func (h *Handler) DeleteComment(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 

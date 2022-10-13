@@ -41,6 +41,7 @@ func NewService(store Store) *Service {
 	}
 }
 
+// GetAllComments - 
 func (s *Service) GetAllComments(ctx context.Context) ([]Comment, error) {
 	cmts, err := s.Store.GetAllComments(ctx)
 	if err != nil {

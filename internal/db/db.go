@@ -9,12 +9,12 @@ import (
 	_ "github.com/lib/pq"
 )
 
-// Database - It's the struct that represents our Database
+// Database - It's the struct that represents the Database
 type Database struct {
 	Client *sqlx.DB
 }
 
-// NewDatabase - Instantiates our database
+// NewDatabase - Instantiates an database
 func NewDatabase() (*Database, error) {
 	connectionString := fmt.Sprintf(
 		"host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
@@ -35,7 +35,7 @@ func NewDatabase() (*Database, error) {
 	return &Database{Client: dbConn}, nil
 }
 
-// Ping - Ping our database to check its health.
+// Ping - pings the database to check its health.
 func (d *Database) Ping(ctx context.Context) error {
 	return d.Client.DB.PingContext(ctx)
 }

@@ -9,6 +9,7 @@ import (
 	"github.com/gdguesser/comment-service/util"
 )
 
+// CommentRow - Represents a CommentRow thats returned by ..Row.. database methods.
 type CommentRow struct {
 	ID     string
 	Slug   sql.NullString
@@ -16,6 +17,7 @@ type CommentRow struct {
 	Author sql.NullString
 }
 
+// convertCommentRowToComment - Converts a CommentRow to a Comment so it can be saved to the database.
 func convertCommentRowToComment(c CommentRow) comment.Comment {
 	return comment.Comment{
 		ID:     c.ID,
